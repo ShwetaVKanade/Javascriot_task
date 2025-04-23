@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dynamic Dropdown</title>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: linear-gradient(135deg, #1e3c72, #2a5298);
+            margin: 0;
+        }
+        .container {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+            text-align: center;
+            width: 400px;
+            backdrop-filter: blur(10px);
+        }
+        h2 {
+            color: #ffffff;
+            background: linear-gradient(90deg, #007BFF, #00c6ff);
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-size: 24px;
+            font-weight: bold;
+            text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.3);
+        }
+        label {
+            display: block;
+            margin: 14px 0 6px;
+            font-weight: 600;
+            color: #333;
+            font-size: 16px;
+        }
+        select {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 10px;
+            background: #f9f9f9;
+            color: #333;
+            font-size: 16px;
+            transition: 0.3s;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            outline: none;
+        }
+        select:focus {
+            background: #e3f2fd;
+            transform: scale(1.02);
+        }
+        select:disabled {
+            background: #ddd;
+            cursor: not-allowed;
+        }
+        .submit-btn {
+            margin-top: 25px;
+            padding: 14px 22px;
+            border: none;
+            border-radius: 10px;
+            background: linear-gradient(90deg, #007BFF, #00c6ff);
+            color: white;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+            width: 100%;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        }
+        .submit-btn:hover {
+            background: linear-gradient(90deg, #0056b3, #0086d1);
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Select Location</h2>
+        <label for="country">Country:</label>
+        <select id="country" onchange="updateStates()">
+            <option value="">Select Country</option>
+            <option value="USA">USA</option>
+            <option value="India">India</option>
+        </select>
+        
+        <label for="state">State:</label>
+        <select id="state" onchange="updateCities()" disabled>
+            <option value="">Select State</option>
+        </select>
+        
+        <label for="city">City:</label>
+        <select id="city" disabled>
+            <option value="">Select City</option>
+        </select>
+        
+        <button class="submit-btn" onclick="submitForm()">Submit</button>
+    </div>
+
+    <script>
+        const stateData = {
+            USA: ["California", "Texas", "Florida"],
+            India: ["Maharashtra", "Karnataka", "Delhi"]
+        };
+
+        const cityData = {
+            California: ["Los Angeles", "San Francisco", "San Diego"],
+            Texas: ["Houston", "Dallas", "Austin"],
+            Florida: ["Miami", "Orlando", "Tampa"],
+            Maharashtra: ["Mumbai", "Pune", "Nagpur"],
+            Karnataka: ["Bangalore", "Mysore", "Hubli"],
+            Delhi: ["New Delhi", "Old Delhi"]
+        };
+
+        function updateStates() {
+            let country = document.getElementById("country").value;
+            let stateDropdown = document.getElementById("state");
+            let cityDropdown = document.getElementById("city");
+            
+            stateDropdown.innerHTML = '<option value="">Select State</option>';
+            cityDropdown.innerHTML = '<option value="">Select City</option>';
+            cityDropdown.disabled = true;
+
+            if (country) {
+                stateDropdown.disabled = false;
+                stateData[country].forEach(state => {
+                    let option = new Option(state, state);
+                    stateDropdown.add(option);
+                });
+            } else {
+                stateDropdown.disabled = true;
+            }
+        }
+
+        function updateCities() {
+            let state = document.getElementById("state").value;
+            let cityDropdown = document.getElementById("city");
+            
+            cityDropdown.innerHTML = '<option value="">Select City</option>';
+            
+            if (state) {
+                cityDropdown.disabled = false;
+                cityData[state].forEach(city => {
+                    let option = new Option(city, city);
+                    cityDropdown.add(option);
+                });
+            } else {
+                cityDropdown.disabled = true;
+            }
+        }
+
+        function submitForm() {
+            let country = document.getElementById("country").value;
+            let state = document.getElementById("state").value;
+            let city = document.getElementById("city").value;
+            
+            if (!country || !state || !city) {
+                alert("Please select all fields before submitting.");
+                return;
+            }
+            alert(`You selected: Country - ${country}, State - ${state}, City - ${city}`);
+        }
+    </script>
+</body>
+</html>
